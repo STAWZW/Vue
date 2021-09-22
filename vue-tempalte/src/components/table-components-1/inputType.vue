@@ -1,10 +1,11 @@
 <template>
     <div v-if="type !== undefined">
         <el-date-picker
-                v-model="date"
+                v-model="valueData"
                 value-format="yyyy-MM-dd"
                 @change="(val) => $emit('input', val)"
                 type="date"
+                size="mini"
                 placeholder="选择日期">
         </el-date-picker>
     </div>
@@ -20,13 +21,13 @@
 
         data() {
             return {
-                date: this.value
+                valueData: this.value
             }
         },
 
         methods: {
-            test(picker){
-                console.log(picker)
+            test(val) {
+                console.log(val)
             }
         }
     };

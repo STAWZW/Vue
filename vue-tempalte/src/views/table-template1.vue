@@ -2,7 +2,7 @@
     <new-table :data="tableData" :columns="columns" @getRowData="saveData"></new-table>
 </template>
 <script>
-    import NewTable from "@/components/table-components/newTable.vue";
+    import NewTable from "@/components/table-components-1/newTable.vue";
 
     export default {
         components: {
@@ -12,8 +12,8 @@
         data() {
             return {
                 columns: [
-                    {title: "日期", dataIndex: "date", editState: true, type: {name: "date"}, width: 300},
-                    {title: "姓名", dataIndex: "name", editState: true},
+                    {title: "日期", dataIndex: "date", type: {name: "date"}, width: 300},
+                    {title: "姓名", dataIndex: "name",},
                     {title: "地址", dataIndex: "address"},
                 ],
 

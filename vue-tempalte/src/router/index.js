@@ -14,6 +14,10 @@ const routes = [
         path: "/table-template",
         name: "TableTemplate",
         component: () => import("../views/table-template.vue"),
+      },{
+        path: "/table-template1",
+        name: "TableTemplate1",
+        component: () => import("../views/table-template1.vue"),
       },
     ],
   },

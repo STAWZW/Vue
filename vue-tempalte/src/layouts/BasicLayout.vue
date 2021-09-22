@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-aside width="200px">
+        <el-aside width="200px" :style="{ minHeight: 'calc(100vh - 137px)', }">
             <Menu></Menu>
         </el-aside>
         <el-main>
