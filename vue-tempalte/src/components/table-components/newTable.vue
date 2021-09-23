@@ -4,6 +4,13 @@
             border
             style="width: 100%">
         <el-table-column
+                label="序号"
+                type="index"
+                width="50"
+                header-align="center"
+                align="center">
+        </el-table-column>
+        <el-table-column
                 v-for="item in columns"
                 :prop="item.dataIndex"
                 :label="item.title"
@@ -14,7 +21,7 @@
             <template slot-scope="scope">
                 <input-type
                         v-if="scope.row.editState && item.editState"
-                        :type="item.type"
+                        :params="item.params"
                         :value="scope.row[item.dataIndex]"
                         @input="(val) => scope.row[item.dataIndex] = val">
                 </input-type>
@@ -22,6 +29,15 @@
             </template>
         </el-table-column>
         <el-table-column width="80" class-name="scope-edit">
+            <template slot="header">
+                <el-row type="flex" justify="center">
+                    <el-link
+                            type="primary"
+                            icon="el-icon-circle-plus-outline"
+                            @click="addData">
+                    </el-link>
+                </el-row>
+            </template>
             <template slot-scope="scope">
                 <el-row type="flex" justify="center">
                     <el-link
@@ -36,7 +52,13 @@
                             icon="el-icon-check"
                             @click="saveData(scope.row)">
                     </el-link>
-                    <el-divider v-if="scope.row.editState" direction="vertical"></el-divider>
+                    <el-divider direction="vertical"></el-divider>
+                    <el-link
+                            v-if="!scope.row.editState"
+                            type="primary"
+                            icon="el-icon-delete"
+                            @click="deleteData(scope.row)">
+                    </el-link>
                     <el-link
                             v-if="scope.row.editState"
                             type="primary"
@@ -53,16 +75,31 @@
 
     export default {
 
-        props: ["data", "columns"],
+        props: {
+            data: {
+                type: Array,
+            },
+            columns: {
+                type: Array,
+            }
+        },
 
         components: {InputType},
 
         data() {
             return {
+                // 做数据缓存
                 oldData: JSON.parse(JSON.stringify(this.data))
             };
         },
         methods: {
+            // 添加数据
+            addData() {
+                const copyData = [...this.data,{editState: true}];
+                console.log(copyData);
+                this.$emit('update:data', copyData);
+            },
+
             // 编辑数据
             editData(row) {
                 this.$set(row, 'editState', true)
@@ -71,9 +108,7 @@
             // 保存数据
             saveData(row) {
                 this.oldData.forEach((item,index,arr) => {
-                    if(item.uuid === row.uuid){
-                        arr[index] = {...row} ;
-                    }
+                    if(item.uuid === row.uuid) arr[index] = {...row}
                 });
                 this.$set(row, 'editState', false);
                 this.$emit('getRowData', row)
@@ -90,6 +125,12 @@
                 });
                 this.$set(row, 'editState', false);
             },
+
+            // 删除数据
+            deleteData(row){
+                this.data.splice(this.data.findIndex((item) => item.uuid === row.uuid),1);
+                this.oldData.splice(this.oldData.findIndex((item) => item.uuid === row.uuid),1);
+            }
         }
     };
 </script>

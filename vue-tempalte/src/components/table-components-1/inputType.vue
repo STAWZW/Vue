@@ -10,7 +10,7 @@
         </el-date-picker>
     </div>
     <div v-else>
-        <el-input :value="value" size="mini" @input="$emit('input', $event)"></el-input>
+        <el-input :value="value" size="mini" @input="$emit('input', $event)" v-focus></el-input>
     </div>
 </template>
 <script>
@@ -22,6 +22,17 @@
         data() {
             return {
                 valueData: this.value
+            }
+        },
+
+        directives: {
+            // 注册一个局部的自定义指令 v-focus
+            focus: {
+                // 指令的定义
+                inserted: function (el) {
+                    // 聚焦元素
+                    el.querySelector('input').focus()
+                }
             }
         },
 

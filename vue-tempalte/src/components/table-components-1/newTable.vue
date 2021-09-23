@@ -3,7 +3,7 @@
             :data="data"
             border
             style="width: 100%"
-            @cell-dblclick="test">
+            @cell-dblclick="dbClick">
         <el-table-column
                 v-for="item in columns"
                 :prop="item.dataIndex"
@@ -60,9 +60,12 @@
 
         data() {
             return {
-                oldData: JSON.parse(JSON.stringify(this.data))
+                oldData: JSON.parse(JSON.stringify(this.data)),
+                oldRow: {},
+                oldColumn: {}
             };
         },
+
         methods: {
             // 编辑数据
             editData(row) {
@@ -92,12 +95,15 @@
                 this.$set(row, 'editState', false);
             },
 
-            test(row, column, cell, event){
+            dbClick(row, column){
+                if(this.oldRow !== {}) this.$set(this.oldRow, 'editState', false);
+                if(this.oldColumn !== {}) this.$set(this.oldColumn, 'editState', false);
+                this.oldRow = row;
                 this.$set(row, 'editState', true);
-                console.log(row, column, cell, event)
                 this.columns.forEach((item,index,arr) => {
                     if(item.title === column.label){
-                        arr[index].editState= true
+                        this.$set(arr[index], 'editState', true);
+                        this.oldColumn = item;
                     }
                 })
             }
