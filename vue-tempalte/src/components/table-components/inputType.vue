@@ -3,10 +3,11 @@
         <el-input
                 :value="value"
                 size="mini"
+                clearable
+                show-word-limit
                 placeholder="请输入信息"
                 @input="$emit('input', $event)">
         </el-input>
-
     </div>
     <div v-else>
         <el-date-picker
